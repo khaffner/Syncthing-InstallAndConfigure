@@ -9,7 +9,7 @@ if(!(Test-Path "C:\Windows\System32\nssm.exe")) {
 #Get Syncthing
 if(!(Test-Path 'C:\Program Files\Syncthing\Syncthing.exe')) {
     $BaseUrlSyncthing = 'https://github.com/syncthing/syncthing/releases'
-    Invoke-WebRequest ("https://github.com"+((Invoke-WebRequest $BaseUrlSyncthing).Links | Where href -like "*windows-amd64*" | select -First 1).href) -OutFile $env:TEMP\syncthing.zip
+    Invoke-WebRequest ("https://github.com"+((Invoke-WebRequest $BaseUrlSyncthing).Links | Where href -like "*windows-amd64*" | where href -NotLike '*rc*' | select -First 1).href) -OutFile $env:TEMP\syncthing.zip
     Expand-Archive -Path $env:TEMP\syncthing.zip -DestinationPath $env:ProgramFiles -Force
     Get-ChildItem -Path $env:ProgramFiles -Filter 'Syncthing-windows*' | Rename-Item -NewName Syncthing -Force
 }
