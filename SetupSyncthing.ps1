@@ -13,7 +13,6 @@ Function Install-Syncthing {
     }
 
     Process {
-        
         #Get NSSM
         if(!(Test-Path "$NssmFolder\nssm.exe")) {
             Invoke-WebRequest ($BaseUrlNSSM+((Invoke-WebRequest "$BaseUrlNSSM/download").Links | where href -Like /ci*zip | select -First 1).href) -OutFile $env:TEMP\nssm.zip
@@ -29,13 +28,12 @@ Function Install-Syncthing {
         }
         
         #Make Service for Syncthing
-        nssm remove Syncthing confirm
         nssm install Syncthing "$SyncthingFolder\Syncthing\syncthing.exe" "-no-restart -no-browser -home=""$SyncthingFolder\Syncthing"""
         nssm set Syncthing AppExit Default Exit
         nssm set Syncthing AppExit 0 Exit
         nssm set Syncthing AppExit 3 Restart
         nssm set Syncthing AppExit 4 Restart
-        nssm set Syncthing ObjectName $ServiceUser $ServicePassword
+        nssm set Syncthing ObjectName .\$ServiceUser $ServicePassword
         Set-Service -Name Syncthing -StartupType Automatic
     }
 
