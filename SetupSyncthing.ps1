@@ -34,11 +34,11 @@ Function Install-Syncthing {
         nssm set Syncthing AppExit 3 Restart
         nssm set Syncthing AppExit 4 Restart
         nssm set Syncthing ObjectName .\$ServiceUser $ServicePassword
-        Set-Service -Name Syncthing -StartupType Automatic
+        nssm set Syncthing Start SERVICE_DELAYED_AUTO_START
     }
 
     End {
         #Start Syncting
-        Start-Service -Name Syncthing
+        nssm start Syncthing
     }
 }
